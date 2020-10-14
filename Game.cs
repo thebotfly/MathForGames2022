@@ -10,12 +10,20 @@ namespace MathForGames
     {
         private static bool _gameOver = false;
         private Scene _scene;
-        private Actor _actor;
 
+        public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.Red;
         //Static function used to set game over without an instance of game.
         public static void SetGameOver(bool value)
         {
             _gameOver = value;
+        }
+        public static ConsoleKey GetNextKey()
+        {
+            if (!Console.KeyAvailable)
+            {
+                return 0;
+            }
+            return Console.ReadKey(true).Key;
         }
 
         public static bool CheckKey(ConsoleKey key)
@@ -34,9 +42,13 @@ namespace MathForGames
         //Called when the game begins. Use this for initialization.
         public void Start()
         {
+            Console.CursorVisible = false;
             _scene = new Scene();
-            Actor actor = new Actor();
+            Actor actor = new Actor(0, 0, 'a', ConsoleColor.Green);
+            actor.Velocity.X = 1;
             _scene.AddActor(actor);
+            Player player = new Player(0, 1, '@', ConsoleColor.Red);
+            _scene.AddActor(player);
         }
 
 
@@ -44,6 +56,7 @@ namespace MathForGames
         public void Update()
         {
             _scene.Update();
+            
         }
 
         //Used to display objects and other info on the screen.
