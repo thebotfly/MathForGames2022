@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Raylib_cs;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace MathForGames
@@ -10,46 +12,27 @@ namespace MathForGames
 
     class Player : Actor
     {
-        public Player(float x, float y, char icon = 'a', ConsoleColor _color = ConsoleColor.Red) : base(x, y, icon)
+        public Player( float x, float y,  char icon = ' ', ConsoleColor color = ConsoleColor.Red) : base(x, y, icon, color)
+        {
+
+        }
+
+        public Player( float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.Red) : base(x, y, icon, color)
         {
 
         }
         public override void Update()
         {
-            ConsoleKey keyPressed = Game.GetNextKey();
 
-            switch (keyPressed)
-            {
-                case ConsoleKey.A:
-                    _velocity.X = -1;
-                    break;
-                case ConsoleKey.D:
-                    _velocity.X = 1;
-                    break;
-                case ConsoleKey.W:
-                    _velocity.Y = -1;
-                    break;
-                case ConsoleKey.S:
-                    _velocity.Y = 1;
-                    break;
-                default:
-                    _velocity.X = 0;
-                    _velocity.Y = 0;
-                    break;
-            }
+            int xVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_A)) + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_D));
+            int yVelocity = -Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_W)) + Convert.ToInt32(Game.GetKeyDown((int)KeyboardKey.KEY_S));
+
             _position.X += _velocity.X;
             _position.Y += _velocity.Y;
             _position.X = Math.Clamp(_position.X, 0, Console.WindowWidth - 1);
             _position.Y = Math.Clamp(_position.Y, 0, Console.WindowHeight + 1);
 
-            if (_position.X < 0)
-                _position.X++;
-            if (_position.X >= Console.WindowWidth)
-                _position.X--;
-            if (_position.Y < 0)
-                _position.Y++;
-            if (_position.Y >= Console.WindowHeight)
-                _position.Y--;
+           
         }
 
     }

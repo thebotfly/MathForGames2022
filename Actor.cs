@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using Math_Library;
+using Raylib_cs;
 
 namespace MathForGames
 {
     class Actor
     {
-        private char _icon = 'a';
+        private char _icon = ' ';
         public Vector2 _position;
         public Vector2 _velocity;
         private ConsoleColor _color;
+        protected Color _rayColor;
+
+        public bool Started { get; private set; }
 
         public float X
         {
@@ -61,65 +65,45 @@ namespace MathForGames
 
 
 
-        public Actor( float x, float y, char icon = 'a', ConsoleColor color = ConsoleColor.Green)
+        public Actor( float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.Green)
         {
-
+            _rayColor = Color.GREEN;
             _icon = icon;
             _position = new Vector2(x, y);
             _velocity = new Vector2(x, y);
             _color = color;
         }
 
-
+        public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.Green)
+            : this(x,y,icon,color)
+        {
+            _rayColor = rayColor;
+          
+        }
        
      
         
 
         public virtual void Start()
         {
-           
+            Started = true;
         }
 
         public virtual void Update()
         {
-            ConsoleKey keyPressed = Game.GetNextKey();
-
-            switch (keyPressed)
-            {
-                case ConsoleKey.A:
-                    _velocity.X = -1;
-                    break;
-                case ConsoleKey.D:
-                    _velocity.X = 1;
-                    break;
-                case ConsoleKey.W:
-                    _velocity.Y = -1;
-                    break;
-                case ConsoleKey.S:
-                    _velocity.Y = 1;
-                    break;
-                default:
-                    _velocity.X = 0;
-                    _velocity.Y = 0;
-                    break;
-            }
+            
+            
             _position += _velocity;
            _position.X = Math.Clamp(_position.X, 0, Console.WindowWidth-1);
            _position.Y = Math.Clamp(_position.Y, 0, Console.WindowHeight+1);
 
-            if (_position.X < 0)
-                _position.X++;
-            if (_position.X >= Console.WindowWidth)
-                _position.X--;
-            if (_position.Y < 0)
-                _position.Y++;
-            if (_position.Y >= Console.WindowHeight)
-                _position.Y--;
+            
             
         }
 
         public virtual void Draw()
         {
+            Raylib.DrawText(_icon.ToString(),(int) _position.X*32,(int) _position.Y*32, 32,_rayColor);
             Console.ForegroundColor = _color;
             Console.SetCursorPosition((int)_position.X,(int)_position.Y);
             Console.Write(_icon);
@@ -128,7 +112,7 @@ namespace MathForGames
 
         public virtual void End()
         {
-
+            Started = false;
         }
 
     }

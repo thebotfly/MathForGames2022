@@ -8,6 +8,8 @@ namespace MathForGames
     {
         private Actor[] _actors;
 
+        public bool Started { get; private set; }
+
         public Scene()
         {
             _actors = new Actor[0];
@@ -61,7 +63,6 @@ namespace MathForGames
                 return false;
             }
             bool actorRemoved = false;
-
             Actor[] newArray = new Actor[_actors.Length - 1];
             for(int i = 0; i < _actors.Length; i++)
             {
@@ -74,6 +75,8 @@ namespace MathForGames
                 else
                 {
                     actorRemoved = true;
+                    if (_actors[i].Started)
+                        _actors[i].End();
                 }
             }
 
@@ -84,16 +87,15 @@ namespace MathForGames
 
         public virtual void Start()
         {
-            for (int i = 0; i < _actors.Length; i++)
-            {
-                _actors[i].Start();
-            }
+            Started = true;
         }
 
         public virtual void Update()
         {
             for (int i = 0; i < _actors.Length; i++)
             {
+                if (!_actors[i].Started)
+                    _actors[i].Start();
                 _actors[i].Update();
             }
         }
@@ -102,7 +104,8 @@ namespace MathForGames
         {
             for (int i = 0; i < _actors.Length; i++)
             {
-                _actors[i].Draw();
+                if(_actors[i].Started)
+                _actors[i].End();
             }
         }
 
@@ -110,8 +113,10 @@ namespace MathForGames
         {
             for (int i = 0; i < _actors.Length; i++)
             {
+                if(_actors[i].Started)
                 _actors[i].End();
             }
+            Started = false;
         }
     }
 }
