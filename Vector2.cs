@@ -43,6 +43,29 @@ namespace Math_Library
 
         }
 
+        public float Magnitude
+        {
+            get
+            {
+                return (float)Math.Sqrt(X * X + Y * Y);
+            }
+        }
+
+        public Vector2 Normalized
+        {
+            get
+            {
+                return Normalize(this);
+            }
+        }
+
+        public static Vector2 Normalize(Vector2 vector)
+        {
+            if (vector.Magnitude == 0)
+                return new Vector2();
+            return vector / vector.Magnitude;
+        }
+
 
         public static Vector2 operator + (Vector2 Ihs, Vector2 rhs)
         {
@@ -51,15 +74,21 @@ namespace Math_Library
 
             return new Vector2(x, y);
         }
+
+        public static Vector2 operator -(Vector2 Ihs, Vector2 rhs)
+        {
+            return new Vector2(Ihs.X - rhs.X, Ihs.Y - rhs.Y);
+        }
         public static Vector2 operator *(Vector2 Ihs, float scalar)
         {
             return new Vector2(Ihs.X * scalar, Ihs.Y * scalar);
         }
 
-        public float GetMagnitude()
+        public static Vector2 operator /(Vector2 Ihs, float scalar)
         {
-         return (float)   Math.Sqrt(X * X + Y * Y);
+            return new Vector2(Ihs.X / scalar, Ihs.Y / scalar);
         }
+
 
 
     }
