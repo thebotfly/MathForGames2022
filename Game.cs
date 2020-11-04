@@ -145,6 +145,9 @@ namespace MathForGames
             int startingSceneIndex = Addscene(scene);
             SetCurrentScene(startingSceneIndex);
             player.Speed = 5;
+            player.SetTranslate(new Vector2(10, 10));
+            player.SetRotation(1);
+            player.SetScale(1, 6);
 
             
         }

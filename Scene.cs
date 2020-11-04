@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Math_Library;
 
 namespace MathForGames
 {
     class Scene
     {
         private Actor[] _actors;
+        private Matrix3 _transform;
 
+        public Matrix3 World
+        {
+            get { return _transform; }
+        }
         public bool Started { get; private set; }
 
         public Scene()
