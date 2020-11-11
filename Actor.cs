@@ -26,27 +26,27 @@ namespace MathForGames
 
         public void SetTranslate(Vector2 position)
         {
-            _translation.m13 = position.X;
-            _translation.m23 = position.Y;
+            _translation = Matrix3.CreateTranslation(position);
         }
 
         public void SetRotation(float radians)
         {
-            _rotation.m11 = (float)Math.Cos(radians);
-            _rotation.m21 = -(float)Math.Sin(radians);
-            _rotation.m12 = (float)Math.Sin(radians);
-            _rotation.m22 = (float)Math.Cos(radians);
+            _rotation = Matrix3.CreateRotation(radians);
         }
 
         public void SetScale(float X, float Y)
         {
-            _scale.m11 = X;
-            _scale.m22 = Y;
+            _scale = Matrix3.CreateScale(new Vector2(X, Y));
         }
 
         public void UpdateTransform()
         {
             _localtransform = _translation * _rotation * _scale;
+
+            if (_parent != null)
+                _globalTransform = _parent._globalTransform * _localtransform;
+            else
+                _globalTransform = Game.GetCurrentScene().World * _localtransform;
         }
 
         public Vector2 Forward
@@ -223,10 +223,10 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            Raylib.DrawText(_icon.ToString(), (int)LocalPosition.X * 32, (int)LocalPosition.Y * 32, 32, _rayColor);
-            Raylib.DrawLine((int)LocalPosition.X * 32, (int)LocalPosition.Y * 32, (int)LocalPosition.X + (Forward.X * 32)),(int)LocalPosition.Y + (Forward.Y * 32)) _rayColor);
+            Raylib.DrawText(_icon.ToString(), (int)WorldPosition.X * 32, (int)WorldPosition.Y * 32, 32, _rayColor);
+            Raylib.DrawLine((int)WorldPosition.X * 32, (int)WorldPosition.Y * 32, (int)WorldPosition.X + (Forward.X * 32)),(int)WorldPosition.Y + (Forward.Y * 32)) _rayColor);
             Console.ForegroundColor = _color;
-            Console.SetCursorPosition((int)LocalPosition.X,(int)LocalPosition.Y);
+            Console.SetCursorPosition((int)WorldPosition.X,(int)WorldPosition.Y);
             Console.Write(_icon);
             Console.ForegroundColor = Game.DefaultColor;
 
