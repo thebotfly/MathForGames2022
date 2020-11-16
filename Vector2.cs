@@ -89,6 +89,11 @@ namespace Math_Library
             return new Vector2(Ihs.X / scalar, Ihs.Y / scalar);
         }
 
+        public static Vector2 DotProduct(Vector2 Ihs, Vector2 rhs)
+        {
+            return new Vector2 (Ihs.X * rhs.X, + Ihs.Y * rhs.Y);
+        }
+
 
 
     }
